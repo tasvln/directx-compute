@@ -11,6 +11,7 @@ class ConstantBuffer;
 class Pipeline;
 class Camera;
 class Lighting;
+class Grid;
 
 class UpdateEventArgs;
 class RenderEventArgs;
@@ -69,6 +70,8 @@ class Application
         std::unique_ptr<ConstantBuffer> materialBuffer;
         std::unique_ptr<Pipeline> pipeline1;
         std::unique_ptr<Camera> camera1;
+
+        std::unique_ptr<Grid> sceneGrid;
 
         std::unique_ptr<Lighting> lighting1;
 };

@@ -13,6 +13,7 @@
 
 #include "engine/scene/camera.h"
 #include "engine/scene/lighting.h"
+#include "engine/scene/grid.h"
 
 #include "utils/events.h"
 #include "utils/frame_timer.h"
@@ -127,6 +128,12 @@ void Application::init() {
         device->getDevice()
     );
     LOG_INFO(L"Lighting initialized!");
+
+    sceneGrid = std::make_unique<Grid>(
+        device->getDevice(),
+        directCommandQueue.get(),
+        swapchain->getSRVHeap()
+    );
 
     // pipeline
     // Root parameters: TODO: make it dynamic?
@@ -318,6 +325,8 @@ void Application::onUpdate(UpdateEventArgs& args)
     XMFLOAT3 camPos = camera1->getPosition();
     lighting1->setEyePosition(camPos);
     lighting1->updateGPU(); // Push the light buffer to GPU
+
+    sceneGrid->updateMVP(view * projection);
 }
 
 void Application::onRender(RenderEventArgs& args)
@@ -377,6 +386,9 @@ void Application::onRender(RenderEventArgs& args)
         nullptr
     );
     LOG_INFO(L"Application -> Render target and depth-stencil cleared.");
+
+    sceneGrid->draw(commandList.Get());
+    LOG_INFO(L"Application -> sceneGrid->draw.");
 
     // Draw the Model
     commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
