@@ -346,11 +346,6 @@ void Application::onRender(RenderEventArgs& args)
     auto srvHeap = swapchain->getSRVHeap();
     auto vsync = device->getSupportTearingState();
 
-    // Reset command list with current pipeline
-    commandList->SetPipelineState(pipelineState.Get());
-    commandList->SetGraphicsRootSignature(rootSignature.Get());
-    LOG_INFO(L"Application -> Pipeline state and root signature set.");
-
     // Set viewport and scissor
     commandList->RSSetViewports(1, &viewport);
     commandList->RSSetScissorRects(1, &scissorRect);
@@ -389,6 +384,12 @@ void Application::onRender(RenderEventArgs& args)
 
     sceneGrid->draw(commandList.Get());
     LOG_INFO(L"Application -> sceneGrid->draw.");
+
+    
+    // Reset command list with current pipeline
+    commandList->SetPipelineState(pipelineState.Get());
+    commandList->SetGraphicsRootSignature(rootSignature.Get());
+    LOG_INFO(L"Application -> Pipeline state and root signature set.");
 
     // Draw the Model
     commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -525,12 +526,20 @@ void Application::onMouseMoved(MouseMotionEventArgs& args) {
     }
 }
 
-void Application::cleanUp() {
+void Application::cleanUp()
+{
     LOG_INFO(L"Application cleanup started.");
 
-    if (directCommandQueue) {
+    if (directCommandQueue)
+    {
         LOG_INFO(L"Flushing GPU commands before releasing resources...");
         directCommandQueue->flush();
+    }
+
+    // Release GPU-dependent objects first
+    if (sceneGrid) {
+        sceneGrid.reset();
+        LOG_INFO(L"Scene grid released.");
     }
 
     if (model) {
@@ -564,7 +573,6 @@ void Application::cleanUp() {
     }
 
     if (swapchain) {
-        directCommandQueue->flush();
         swapchain.reset();
         LOG_INFO(L"Swapchain released.");
     }
@@ -584,5 +592,9 @@ void Application::cleanUp() {
         LOG_INFO(L"Window released.");
     }
 
+    hwnd = nullptr;
+    currentBackBufferIndex = 0;
+
     LOG_INFO(L"Application cleanup finished.");
 }
+

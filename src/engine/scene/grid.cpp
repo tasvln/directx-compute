@@ -73,6 +73,7 @@ void Grid::draw(ID3D12GraphicsCommandList* cmdList)
 {
     cmdList->SetPipelineState(pipeline->getPipelineState().Get());
     cmdList->SetGraphicsRootSignature(pipeline->getRootSignature().Get());
+    
     cmdList->SetGraphicsRootConstantBufferView(0, mvpBuffer->getGPUAddress());
     mesh->draw(cmdList, 0);
 }
