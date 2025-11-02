@@ -93,8 +93,8 @@ void Application::init() {
         directCommandQueue.get(),
         swapchain->getSRVHeap(),
         // "assets/models/building1/building.obj"
-        "assets/models/cat/cat.obj"
-        // "assets/models/mountain1/mountain.obj"
+        // "assets/models/cat/cat.obj"
+        "assets/models/mountain1/mountain.obj"
         // "assets/models/weapon1/sniper.obj"
     );
     LOG_INFO(L"Model Resource initialized!");
