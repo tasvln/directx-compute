@@ -8,6 +8,12 @@ class Mesh;
 class Pipeline;
 class ConstantBuffer;
 
+struct GridParams
+{
+    XMFLOAT3 cameraPos;
+    float gridFadeDistance;
+};
+
 class Grid {
     public:
         Grid(
@@ -22,9 +28,12 @@ class Grid {
 
         void updateMVP(const XMMATRIX& viewProj);
 
+        void updateGridParams(const XMFLOAT3& camPos, float fadeDistance = 300.0f);
+
     private:
         ComPtr<ID3D12Device2> device;
         std::unique_ptr<Mesh> mesh;
         std::unique_ptr<Pipeline> pipeline;
         std::unique_ptr<ConstantBuffer> mvpBuffer;
+        std::unique_ptr<ConstantBuffer> gridParamsBuffer;
 };
