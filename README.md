@@ -110,7 +110,7 @@ https://github.com/user-attachments/assets/31d457df-17b5-443d-840d-de06a43fa6d5
 
 ---
 
-## ⚙️ Controls
+## Controls
 
 | Key   | Action          |
 | ----- | --------------- |
@@ -156,7 +156,7 @@ https://github.com/user-attachments/assets/31d457df-17b5-443d-840d-de06a43fa6d5
 
 ---
 
-## 🛠️ Future Improvements
+## Future Improvements
 
 * Terrain-aware particle collision
 * Rain splashes and ripple effects
